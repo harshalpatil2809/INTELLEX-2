@@ -58,7 +58,9 @@ const Input = ({ setMessage }) => {
           onChange={(e)=>{setText(e.target.value)}}
           className="border-2 text-white outline-0 lg:w-1/2 w-full px-5 py-2 rounded-2xl placeholder-white placeholder:font-mono"
         />
-        <button type="submit" className="hover:scale-115">
+        <button onClick={(e) => {
+          SendData(e);
+        }} className="hover:scale-115">
           <SendHorizontal color="white" size={35} />
         </button>
       </form>

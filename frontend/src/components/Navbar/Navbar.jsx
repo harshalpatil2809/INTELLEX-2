@@ -10,17 +10,17 @@ const Navbar = () => {
             </div>
             <div className="flex lg:w-40 w-35 justify-between">
                 <div className="hover:scale-115 hover:text-[#4F8CFF] duration-200 ">
-                    <a href="" target="_blank">
+                    <a href="https://github.com/harshalpatil2809" target="_blank">
                         <Github />
                     </a>
                 </div>
                 <div className="hover:scale-115 hover:text-[#4F8CFF] duration-200">
-                    <a href="" target="_blank">
+                    <a href="https://x.com/Patil_Harshal_5" target="_blank">
                         <Twitter />
                     </a>
                 </div>
                 <div className="hover:scale-115 hover:text-[#4F8CFF] duration-200">
-                    <a href="" target="_blank">
+                    <a href="https://www.linkedin.com/in/harshal-patil-56a0b2293/" target="_blank">
                         <Linkedin />
                     </a>
                 </div>
