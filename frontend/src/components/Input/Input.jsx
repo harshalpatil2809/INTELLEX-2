@@ -6,8 +6,13 @@ import axios from "axios";
 const Input = ({ setMessage }) => {
   const [text, setText] = useState("");
 
+  const Button = (e) =>{
+    console.log(e)
+    e.preventDefault()
+  }
+
   const SendData = async (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" || e.type == "click") {
       e.preventDefault();
 
       setMessage((prev) => [...prev, `You: ${text}`]);
@@ -42,7 +47,6 @@ const Input = ({ setMessage }) => {
   return (
     <div className="w-full h-fit px-2 relative">
       <form
-        method="POST"
         onKeyDown={(e) => {
           SendData(e);
         }}
