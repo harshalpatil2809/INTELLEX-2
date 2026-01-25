@@ -5,7 +5,7 @@ import { useState } from 'react'
 const Layout = () => {
   const [message, setMessage] = useState([])
   return (
-    <div className='w-full flex flex-col'>
+    <div className='w-full flex flex-col '>
         <Navbar />
         <Chat message={message} setMessage={setMessage}/>
     </div>

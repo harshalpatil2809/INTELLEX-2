@@ -9,7 +9,7 @@ const Input = ({ setMessage }) => {
   const SendData = async (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
-      
+
       setMessage((prev) => [...prev, `You: ${text}`]);
 
       try {
@@ -40,7 +40,7 @@ const Input = ({ setMessage }) => {
 
 
   return (
-    <div className="w-full h-fit px-2">
+    <div className="w-full h-fit px-2 relative">
       <form
         method="POST"
         onKeyDown={(e) => {
