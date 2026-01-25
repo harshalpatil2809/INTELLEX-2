@@ -1,21 +1,28 @@
-import Input from '../Input/Input.jsx'
+import Input from "../Input/Input.jsx";
 
 const Chat = ({ message, setMessage }) => {
-  console.log(message)
+  console.log(message);
   return (
-    <div className='flex flex-col flex-1 w-full items-center relative min-h-[90vh] lg:min-h-[85vh]'>
-      <div className='flex-1 w-full  text-white overflow-y-scroll lg:w-3/4 px-2 pt-3'>
+    <div className="flex flex-col flex-1 w-full items-center overflow-hidden">
+      <div className="flex-1 w-full lg:w-3/4 overflow-y-auto overflow-x-hidden px-5 pt-3">
         {message.map((msg, index) => (
-          <div key={index} className="mb-2 flex flex-col gap-2">
-            {msg}
+          <div
+            key={index}
+            className={`mb-2 font-mono wrap-break-word whitespace-pre-wrap leading-relaxed ${
+              msg.role === "user"
+                ? "text-left text-blue-400 w-fit bg-[#333] px-4 py-2 rounded-2xl "
+                : "text-right text-green-400 w-fit bg-[#333] px-4 py-2 rounded-2xl lg:max-w-3/4"
+            }`}
+          >
+            {msg.text}
           </div>
         ))}
       </div>
-      <div className='w-full absolute bottom-0'>
+      <div className="w-full py-3">
         <Input setMessage={setMessage} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;

@@ -12,10 +12,13 @@ const Input = ({ setMessage }) => {
   }
 
   const SendData = async (e) => {
+    
+    if (!text.trim()) return;
+
     if (e.key === "Enter" || e.type == "click") {
       e.preventDefault();
 
-      setMessage((prev) => [...prev, `You: ${text}`]);
+      setMessage(prev => [...prev, { role: "user", text }]);
 
       try {
         const response = await axios.post(
@@ -34,13 +37,14 @@ const Input = ({ setMessage }) => {
 
         const responseData = response.data.output[1].content[0].text;
 
-        // 2️⃣ API ka response bhejo
-        setMessage((prev) => [...prev, `Bot: ${responseData}`]);
+        
+        setMessage(prev => [...prev, { role: "bot", text: responseData }]);
         setText("");
       } catch (error) {
         console.error(error);
       }
     }
+
   };
 
 

@@ -2,7 +2,7 @@ import { Github, Twitter, Linkedin } from "lucide-react";
 
 const Navbar = () => {
     return (
-        <div className="z-10 flex justify-between items-center px-2.5 pt-4 lg:px-10 w-full h-auto text-white lg:pb-2">
+        <div className="z-10 flex justify-between items-center px-2.5 pt-4 lg:px-10 w-full h-auto text-white pb-2">
             <div>
                 <h1 className="text-xl lg:text-3xl md:text-2xl sm:text-xl font-mono font-black ">
                     INTELLEX
