@@ -3,8 +3,9 @@ import { Send, SendHorizontal } from "lucide-react";
 import axios from "axios";
 
 
-const Input = ({ setMessage }) => {
+const Input = ({ setMessage, setLoader }) => {
   const [text, setText] = useState("");
+  
 
   const Button = (e) =>{
     console.log(e)
@@ -21,6 +22,7 @@ const Input = ({ setMessage }) => {
       setMessage(prev => [...prev, { role: "user", text }]);
 
       try {
+        setLoader(true)
         const response = await axios.post(
           "https://api.groq.com/openai/v1/responses",
           {
@@ -40,6 +42,7 @@ const Input = ({ setMessage }) => {
         
         setMessage(prev => [...prev, { role: "bot", text: responseData }]);
         setText("");
+        setLoader(false)
       } catch (error) {
         console.error(error);
       }
