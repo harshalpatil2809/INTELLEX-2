@@ -1,6 +1,10 @@
 @import "tailwindcss";
 
 
+*{
+  background-color:#0B0B0B;
+}
+
 
 /* WebKit browsers (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
