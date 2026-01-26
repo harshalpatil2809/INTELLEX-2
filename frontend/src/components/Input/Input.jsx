@@ -68,7 +68,7 @@ const Input = ({ setMessage }) => {
         />
         <button onClick={(e) => {
           SendData(e);
-        }} className="hover:scale-115">
+        }} className="hover:scale-115 duration-150">
           <SendHorizontal color="white" size={35} />
         </button>
       </form>
