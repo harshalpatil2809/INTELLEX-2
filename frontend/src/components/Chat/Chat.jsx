@@ -3,39 +3,44 @@ import { Loader } from "../Loader/Loader.jsx";
 
 const Chat = ({ message, setMessage, loader, setLoader }) => {
   return (
-    <div className="flex flex-col flex-1 w-full items-center justify-center overflow-hidden">
-      {loader ? (
-        <div className="z-100 "><Loader /></div>
-      ) : (
-        <>
-          {/* Messages */}
-          <div className="overflow-y-auto overflow-x-hidden flex flex-col items-center">
-          {message.map((msg, index) => (
+    // FULL HEIGHT (Navbar ke niche)
+    <div className="flex flex-col flex-1 w-full overflow-hidden">
+      
+      {/* CHAT AREA */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 py-3">
+        {loader && (
+          <div className="z-50 flex justify-center items-center">
+            <Loader />
+          </div>
+        )}
+
+        <div className="flex flex-col items-center">
+          {!loader &&
+          message.map((msg, index) => (
             <div
               key={index}
-              className={`flex w-[95vw] lg:w-3/4 md:w-3/4 mb-2  ${
+              className={`flex lg:w-3/4 md:w-3/4 w-full mb-3 ${
                 msg.role === "user" ? "justify-start" : "justify-end"
               }`}
             >
               <div
-                className={`font-mono wrap-break-word whitespace-pre-wrap leading-relaxed px-4 py-2 rounded-2xl max-w-[75%] ${
+                className={`max-w-[75%] px-4 py-2 rounded-2xl font-mono break-words whitespace-pre-wrap ${
                   msg.role === "user"
                     ? "text-white border "
-                    : "text-white border"
+                    : "text-white border "
                 }`}
               >
                 {msg.text}
               </div>
             </div>
           ))}
-          </div>
+        </div>
+      </div>
 
-          {/* Input */}
-          <div className="w-full py-3 pb-10">
-            <Input setMessage={setMessage} setLoader={setLoader} />
-          </div>
-        </>
-      )}
+      {/* INPUT AREA (BOTTOM FIXED SPACE) */}
+      <div className="w-full pb-10 pt-3 border-t border-gray-700">
+        <Input setMessage={setMessage} setLoader={setLoader} />
+      </div>
     </div>
   );
 };
