@@ -23,6 +23,7 @@ const Input = ({ setMessage, setLoader }) => {
 
       try {
         setLoader(true)
+        setText("");
         const response = await axios.post(
           "https://api.groq.com/openai/v1/responses",
           {
@@ -37,11 +38,10 @@ const Input = ({ setMessage, setLoader }) => {
           }
         );
 
-        const responseData = response.data.output[1].content[0].text;
+        const responseData = response?.data?.output[1]?.content[0]?.text;
 
         
         setMessage(prev => [...prev, { role: "bot", text: responseData }]);
-        setText("");
         setLoader(false)
       } catch (error) {
         console.error(error);
