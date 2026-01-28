@@ -59,7 +59,7 @@ const Input = ({ setMessage, setLoader }) => {
         }}
         className="flex justify-center items-center lg:gap-5 gap-2"
       >
-        <input
+        <textarea
           type="text"
           value={text}
           autoComplete="false"

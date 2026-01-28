@@ -2,6 +2,7 @@ import Input from "../Input/Input.jsx";
 import { Loader } from "../Loader/Loader.jsx";
 
 const Chat = ({ message, setMessage, loader, setLoader }) => {
+  console.log(message)
   return (
     // FULL HEIGHT (Navbar ke niche)
     <div className="flex flex-col flex-1 w-full overflow-hidden">
@@ -20,7 +21,7 @@ const Chat = ({ message, setMessage, loader, setLoader }) => {
             <div
               key={index}
               className={`flex lg:w-3/4 md:w-3/4 w-full mb-3 ${
-                msg.role === "user" ? "justify-start" : "justify-end"
+                msg.role === "user" ? "justify-end" : "justify-start"
               }`}
             >
               <div
