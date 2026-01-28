@@ -66,7 +66,7 @@ const Input = ({ setMessage, setLoader }) => {
           spellCheck="false"
           placeholder="Start To Chat"
           onChange={(e)=>{setText(e.target.value)}}
-          className="border-2 text-white outline-0 lg:w-1/2 w-full px-5 py-2 rounded-2xl placeholder-white placeholder:font-mono"
+          className="border-2 text-white outline-0 lg:w-1/2 md:w-3/4 w-full px-5 py-2 rounded-2xl placeholder-white placeholder:font-mono"
         ></textarea>
         <button
           onClick={(e) => {
