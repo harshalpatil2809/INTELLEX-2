@@ -2,27 +2,24 @@ import React, { useState } from "react";
 import { Send, SendHorizontal } from "lucide-react";
 import axios from "axios";
 
-
 const Input = ({ setMessage, setLoader }) => {
   const [text, setText] = useState("");
-  
 
-  const Button = (e) =>{
-    console.log(e)
-    e.preventDefault()
-  }
+  const Button = (e) => {
+    console.log(e);
+    e.preventDefault();
+  };
 
   const SendData = async (e) => {
-    
     if (!text.trim()) return;
 
     if (e.key === "Enter" || e.type == "click") {
       e.preventDefault();
 
-      setMessage(prev => [...prev, { role: "user", text }]);
+      setMessage((prev) => [...prev, { role: "user", text }]);
 
       try {
-        setLoader(true)
+        setLoader(true);
         setText("");
         const response = await axios.post(
           "https://api.groq.com/openai/v1/responses",
@@ -35,21 +32,22 @@ const Input = ({ setMessage, setLoader }) => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
             },
-          }
+          },
         );
 
         const responseData = response?.data?.output[1]?.content[0]?.text;
 
-        
-        setMessage(prev => [...prev, { role: "bot", text: responseData }]);
-        setLoader(false)
+        setMessage((prev) => [...prev, { role: "bot", text: responseData }]);
+        setLoader(false);
       } catch (error) {
-        console.error(error);
+        if (error.status === 401) {
+          setMessage((prev) => [...prev, { role: "bot", text: "API is not working... Please try again." }]);
+          setLoader(false)
+
+        }
       }
     }
-
   };
-
 
   return (
     <div className="w-full h-fit px-2 relative">
@@ -60,7 +58,8 @@ const Input = ({ setMessage, setLoader }) => {
         className="flex justify-center items-center lg:gap-5 gap-2"
       >
         <textarea
-          type="text"
+          name="input"
+          id="input"
           value={text}
           autoComplete="false"
           autoCorrect="false"
@@ -68,10 +67,13 @@ const Input = ({ setMessage, setLoader }) => {
           placeholder="Start To Chat"
           onChange={(e)=>{setText(e.target.value)}}
           className="border-2 text-white outline-0 lg:w-1/2 w-full px-5 py-2 rounded-2xl placeholder-white placeholder:font-mono"
-        />
-        <button onClick={(e) => {
-          SendData(e);
-        }} className="hover:scale-115 duration-150">
+        ></textarea>
+        <button
+          onClick={(e) => {
+            SendData(e);
+          }}
+          className="hover:scale-115 duration-150"
+        >
           <SendHorizontal color="white" size={35} />
         </button>
       </form>
