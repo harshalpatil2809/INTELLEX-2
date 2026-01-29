@@ -29,7 +29,7 @@ const Chat = () => {
               }`}
             >
               <div
-                className={`max-w-[75%] px-4 py-2 rounded-2xl font-inter tracking-wider wrap-break-word whitespace-pre-wrap ${
+                className={`max-w-[75%] px-4 py-2 rounded-2xl font-inter tracking-wider leading-loose wrap-break-word whitespace-pre-wrap ${
                   msg.role === "user"
                     ? "text-white border "
                     : "text-white border "
