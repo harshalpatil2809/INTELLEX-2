@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import Input from "../Input/Input.jsx";
 import { Loader } from "../Loader/Loader.jsx";
+import ChatContext from '../../context/ChatContext.js'
 
-const Chat = ({ message, setMessage, loader, setLoader }) => {
-  console.log(message)
+const Chat = () => {
+  const { message, loader} = useContext(ChatContext)
+
+  
   return (
     // FULL HEIGHT (Navbar ke niche)
     <div className="flex flex-col flex-1 w-full overflow-hidden">
@@ -40,7 +44,7 @@ const Chat = ({ message, setMessage, loader, setLoader }) => {
 
       {/* INPUT AREA (BOTTOM FIXED SPACE) */}
       <div className="w-full pb-10 pt-3 border-t border-gray-700">
-        <Input setMessage={setMessage} setLoader={setLoader} />
+        <Input  />
       </div>
     </div>
   );

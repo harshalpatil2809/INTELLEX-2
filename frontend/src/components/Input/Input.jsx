@@ -1,14 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Send, SendHorizontal } from "lucide-react";
 import axios from "axios";
+import ChatContext from '../../context/ChatContext'
+const Input = () => {
+  
+  const { setMessage, setLoader,text,setText } = useContext(ChatContext)
 
-const Input = ({ setMessage, setLoader }) => {
-  const [text, setText] = useState("");
-
-  const Button = (e) => {
-    console.log(e);
-    e.preventDefault();
-  };
 
   const SendData = async (e) => {
     if (!text.trim()) return;
