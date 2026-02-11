@@ -37,7 +37,7 @@ const Chat = () => {
               }`}
             >
               <div
-                className={`prose max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug ${
+                className={`prose overflow-x-auto max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug ${
                   msg.role === "user" ? "  " : "  "
                 }`}
               >
@@ -59,6 +59,32 @@ const Chat = () => {
                         <code className="bg-gray-800 px-1 rounded">
                           {children}
                         </code>
+                      );
+                    },
+
+                    table({ children }) {
+                      return (
+                        <div className="max-w-full overflow-auto rounded-lg border border-gray-700 my-4">
+                          <table className="w-full border-collapse text-sm">
+                            {children}
+                          </table>
+                        </div>
+                      );
+                    },
+
+                    th({ children }) {
+                      return (
+                        <th className="border border-gray-700 px-3 py-2 bg-gray-800 text-left">
+                          {children}
+                        </th>
+                      );
+                    },
+
+                    td({ children }) {
+                      return (
+                        <td className="border border-gray-700 px-3 py-2">
+                          {children}
+                        </td>
                       );
                     },
                   }}
