@@ -5,7 +5,9 @@
   background-color:#0B0B0B;
 }
 
-
+.chat{
+  background: #333;
+}
 /* WebKit browsers (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
   width: 8px;
