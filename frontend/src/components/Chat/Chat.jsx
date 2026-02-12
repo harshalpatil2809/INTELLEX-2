@@ -28,12 +28,12 @@ const Chat = () => {
         )}
 
         {/* Messages */}
-        <div className="flex flex-col items-center">
+        {/* <div className="flex flex-col border w-full p-2 border-amber-300">
           {message.map((msg, index) => (
             <div
               key={msg.id || index}
-              className={`flex lg:w-3/5 md:w-3/4 w-full mb-3 ${
-                msg.role === "user" ? "justify-end" : "justify-start"
+              className={`flex items-center mb-3 ${
+                msg.role === "user" ? "justify-end border w-20 border-white" : "justify-start"
               }`}
             >
               <div
@@ -95,11 +95,90 @@ const Chat = () => {
             </div>
           ))}
 
+          
+
           {loader && (
             <div className="flex lg:w-3/5 md:w-3/4 w-full mb-3 justify-start">
               <div className="max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug">
                 <Loader />
               </div>
+            </div>
+          )}
+        </div> */}
+
+        <div className="flex flex-col w-full p-4 space-y-4">
+          {message.map((msg, index) => (
+            <div
+              key={msg.id || index}
+              className={`flex w-full ${
+                msg.role === "user" ? "justify-end" : "justify-start"
+              }`}
+            >
+              <div
+                className={`max-w-[85%] md:max-w-[70%] px-4 py-2 rounded-2xl shadow-sm text-white border border-gray-700 ${
+                  msg.role === "user"
+                    ? "rounded-tr-none bg-blue-600"
+                    : "rounded-tl-none bg-gray-800"
+                }`}
+              >
+                <div className="prose prose-invert max-w-full overflow-x-auto text-md tracking-wide whitespace-pre-wrap break-words leading-snug">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code({ inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language={match[1]}
+                            PreTag="div"
+                            className="rounded-lg my-2"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code className="bg-black/30 px-1 rounded text-pink-400">
+                            {children}
+                          </code>
+                        );
+                      },
+                      table({ children }) {
+                        return (
+                          <div className="max-w-full overflow-x-auto rounded-lg border border-gray-600 my-4">
+                            <table className="w-full border-collapse text-sm">
+                              {children}
+                            </table>
+                          </div>
+                        );
+                      },
+                      th({ children }) {
+                        return (
+                          <th className="border border-gray-600 px-3 py-2 bg-gray-700 text-left font-bold">
+                            {children}
+                          </th>
+                        );
+                      },
+                      td({ children }) {
+                        return (
+                          <td className="border border-gray-600 px-3 py-2">
+                            {children}
+                          </td>
+                        );
+                      },
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* Loader */}
+          {loader && (
+            <div className="flex justify-start w-full mb-3">
+              <Loader />
             </div>
           )}
         </div>

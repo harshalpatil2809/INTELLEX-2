@@ -1,11 +1,9 @@
 import React, { useContext } from "react";
 import { Send, SendHorizontal } from "lucide-react";
 import axios from "axios";
-import ChatContext from '../../context/ChatContext'
+import ChatContext from "../../context/ChatContext";
 const Input = () => {
-  
-  const { setMessage, setLoader,text,setText } = useContext(ChatContext)
-
+  const { setMessage, setLoader, text, setText } = useContext(ChatContext);
 
   const SendData = async (e) => {
     if (!text.trim()) return;
@@ -29,19 +27,21 @@ const Input = () => {
               "Content-Type": "application/json",
               Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
             },
-          },
+          }
         );
 
         const responseData = response?.data?.output[1]?.content[0]?.text;
-
         setMessage((prev) => [...prev, { role: "bot", text: responseData }]);
         setLoader(false);
       } catch (error) {
         if (error.status === 401) {
-          setMessage((prev) => [...prev, { role: "bot", text: "API is not working... Please try again." }]);
-          setLoader(false)
-
+          setMessage((prev) => [
+            ...prev,
+            { role: "bot", text: "API is not working... Please try again." },
+          ]);
+          setLoader(false);
         }
+        console.error(error);
       }
     }
   };
@@ -61,15 +61,18 @@ const Input = () => {
           autoComplete="false"
           autoCorrect="false"
           spellCheck="false"
-          placeholder="Start To Chat"
-          onChange={(e)=>{setText(e.target.value)}}
+          placeholder="Start Chat"
+          onChange={(e) => {
+            setText(e.target.value);
+          }}
           className="border-2 text-white outline-0 lg:w-1/2 md:w-3/4 w-full px-5 py-2 rounded-2xl placeholder-white placeholder:font-inter"
         ></textarea>
         <button
           onClick={(e) => {
             SendData(e);
           }}
-          className="hover:scale-115 duration-150"
+          className="hover:scale-115 duration-150 cursor-pointer"
+          disabled={setLoader}
         >
           <SendHorizontal color="white" size={35} />
         </button>
