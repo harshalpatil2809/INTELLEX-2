@@ -22,8 +22,17 @@ const Chat = () => {
       <div className="flex-1 overflow-y-auto px-4 py-3">
         {/* Empty State */}
         {message.length === 0 && (
-          <div className="h-full flex items-center justify-center text-gray-400 text-4xl">
-            Start a conversation 👋
+          <div className="h-full flex items-center justify-center">
+            <div className="items-center flex flex-col gap-1">
+              <img src="/logo.png" alt="logo" className="w-30 h-auto" />
+              <div className="text-[#888] text-3xl">
+                Meet <span className="font-mono font-bold text-white/80">INTELLEX</span>
+              </div>
+              <div className="text-[#888] text-md text-center">
+                Your intelligent partner for brainstorming, coding, and creative
+              solutions. <br /> How can I help you today?
+              </div>
+            </div>
           </div>
         )}
 
@@ -38,7 +47,7 @@ const Chat = () => {
             >
               <div
                 className={`prose max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug ${
-                  msg.role === "user" ? "  " : "  "
+                  msg.role === "user" ? " bg-[#333] " : "  "
                 }`}
               >
                 <ReactMarkdown
