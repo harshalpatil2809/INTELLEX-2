@@ -50,6 +50,7 @@ const Input = () => {
     <div className="w-full h-fit px-2 relative">
       <form
         onKeyDown={(e) => {
+          e.preventDefault();
           SendData(e);
         }}
         className="flex justify-center items-center lg:gap-5 gap-2"
@@ -68,7 +69,9 @@ const Input = () => {
           className="border-2 text-white outline-0 lg:w-1/2 md:w-3/4 w-full px-5 py-2 rounded-2xl placeholder-white placeholder:font-inter"
         ></textarea>
         <button
+          type="button"
           onClick={(e) => {
+            e.preventDefault();
             SendData(e);
           }}
           className="hover:scale-115 duration-150 cursor-pointer"
