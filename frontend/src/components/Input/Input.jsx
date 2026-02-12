@@ -2,13 +2,15 @@ import React, { useContext } from "react";
 import { Send, SendHorizontal } from "lucide-react";
 import axios from "axios";
 import ChatContext from "../../context/ChatContext";
+import { Loader } from "../Loader/Loader";
 const Input = () => {
-  const { setMessage, setLoader, text, setText } = useContext(ChatContext);
+  const { setMessage, setLoader, text, setText, loader } = useContext(ChatContext);
 
   const SendData = async (e) => {
     if (!text.trim()) return;
 
-    if (e.key === "Enter" || e.type == "click") {
+    if (e.key === "Enter" || e.type === "click" || e._reactName === "onClick"
+) {
       e.preventDefault();
 
       setMessage((prev) => [...prev, { role: "user", text }]);
@@ -46,11 +48,13 @@ const Input = () => {
     }
   };
 
+
+
   return (
     <div className="w-full h-fit px-2 relative">
       <form
         onKeyDown={(e) => {
-          e.preventDefault();
+          
           SendData(e);
         }}
         className="flex justify-center items-center lg:gap-5 gap-2"
@@ -75,7 +79,7 @@ const Input = () => {
             SendData(e);
           }}
           className="hover:scale-115 duration-150 cursor-pointer"
-          disabled={setLoader}
+          disabled={loader}
         >
           <SendHorizontal color="white" size={35} />
         </button>
