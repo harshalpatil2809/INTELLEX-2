@@ -20,94 +20,115 @@ const Chat = () => {
     <div className="flex flex-col flex-1 w-full overflow-hidden">
       {/* CHAT AREA */}
       <div className="flex-1 overflow-y-auto px-4 py-3">
-        {/* Empty State */}
+        {/* Empty Message */}
         {message.length === 0 && (
-          <div className="h-full flex items-center justify-center text-gray-400 text-4xl">
-            Start a conversation 👋
+          <div className="h-full w-full flex flex-col items-center justify-center px-6 text-center animate-in fade-in duration-700">
+            {/*Logo */}
+            <div className="mb-6 flex h-20 w-20 items-center justify-center">
+              <img src="/public/logo.png" alt="INTELLEX" />
+            </div>
+            {/* Hero Text */}
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
+              Meet{" "}
+              <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                INTELLEX
+              </span>
+            </h1>
+            {/* Start message */}
+            <p className="text-gray-400 text-sm md:text-base max-w-sm leading-relaxed mb-8">
+              Your intelligent partner for brainstorming, coding, and creative
+              solutions. How can I help you today?
+            </p>
+            <div className="mt-8 flex items-center gap-2 text-gray-500 text-xs uppercase tracking-widest">
+              <span className="h-[1px] w-8 bg-gray-800"></span>
+              Start a conversation
+              <span className="h-[1px] w-8 bg-gray-800"></span>
+            </div>
           </div>
         )}
 
-        {/* Messages */}
-        <div className="flex flex-col items-center">
+        {/* User and Bot Messages */}
+        <div className="flex flex-col w-full p-4 space-y-4">
           {message.map((msg, index) => (
             <div
               key={msg.id || index}
-              className={`flex lg:w-3/5 md:w-3/4 w-full mb-3 ${
+              className={`flex w-full ${
                 msg.role === "user" ? "justify-end" : "justify-start"
               }`}
             >
               <div
-                className={`prose overflow-x-auto max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug ${
-                  msg.role === "user" ? "  " : "  "
+                className={`max-w-[85%] md:max-w-[70%] px-4 py-2 rounded-2xl shadow-sm text-white border border-gray-700 ${
+                  msg.role === "user"
+                    ? "rounded-tr-none bg-blue-600"
+                    : "rounded-tl-none bg-gray-800"
                 }`}
               >
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    code({ inline, className, children, ...props }) {
-                      const match = /language-(\w+)/.exec(className || "");
-                      return !inline && match ? (
-                        <SyntaxHighlighter
-                          style={oneDark}
-                          language={match[1]}
-                          PreTag="div"
-                          {...props}
-                        >
-                          {String(children).replace(/\n$/, "")}
-                        </SyntaxHighlighter>
-                      ) : (
-                        <code className="bg-gray-800 px-1 rounded">
-                          {children}
-                        </code>
-                      );
-                    },
-
-                    table({ children }) {
-                      return (
-                        <div className="max-w-full overflow-auto rounded-lg border border-gray-700 my-4">
-                          <table className="w-full border-collapse text-sm">
+                {/* Table */}
+                <div className="prose prose-invert max-w-full overflow-x-auto text-md tracking-wide whitespace-pre-wrap break-words leading-snug">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code({ inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language={match[1]}
+                            PreTag="div"
+                            className="rounded-lg my-2"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code className="bg-black/30 px-1 rounded text-pink-400">
                             {children}
-                          </table>
-                        </div>
-                      );
-                    },
-
-                    th({ children }) {
-                      return (
-                        <th className="border border-gray-700 px-3 py-2 bg-gray-800 text-left">
-                          {children}
-                        </th>
-                      );
-                    },
-
-                    td({ children }) {
-                      return (
-                        <td className="border border-gray-700 px-3 py-2">
-                          {children}
-                        </td>
-                      );
-                    },
-                  }}
-                >
-                  {msg.text}
-                </ReactMarkdown>
+                          </code>
+                        );
+                      },
+                      table({ children }) {
+                        return (
+                          <div className="max-w-full overflow-x-auto rounded-lg border border-gray-600 my-4">
+                            <table className="w-full border-collapse text-sm">
+                              {children}
+                            </table>
+                          </div>
+                        );
+                      },
+                      th({ children }) {
+                        return (
+                          <th className="border border-gray-600 px-3 py-2 bg-gray-700 text-left font-bold">
+                            {children}
+                          </th>
+                        );
+                      },
+                      td({ children }) {
+                        return (
+                          <td className="border border-gray-600 px-3 py-2">
+                            {children}
+                          </td>
+                        );
+                      },
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
+                </div>
               </div>
             </div>
           ))}
 
+          {/* Bot Loader */}
           {loader && (
-            <div className="flex lg:w-3/5 md:w-3/4 w-full mb-3 justify-start">
-              <div className="max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug">
-                <Loader />
-              </div>
+            <div className="flex justify-start w-full mb-3">
+              <Loader />
             </div>
           )}
         </div>
-
         <div ref={bottomRef} />
       </div>
 
-      {/* INPUT AREA */}
+      {/* Input Box */}
       <div className="w-full pb-6 pt-3 ">
         <Input />
       </div>
