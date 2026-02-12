@@ -5,9 +5,15 @@
   background-color:#0B0B0B;
 }
 
-.chat{
-  background: #333;
+.chat {
+  display: inline-block;
+  background: #2c2c2c;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-family: sans-serif;
 }
+
 /* WebKit browsers (Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
   width: 8px;

@@ -38,7 +38,7 @@ const Chat = () => {
             >
               <div
                 className={`prose overflow-x-auto max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug ${
-                  msg.role === "user" ? "  " : "  "
+                  msg.role === "user" ? " chat " : "  "
                 }`}
               >
                 <ReactMarkdown
