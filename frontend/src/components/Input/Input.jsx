@@ -1,87 +1,96 @@
-import React, { useContext } from "react";
-import { Send, SendHorizontal } from "lucide-react";
+import React, { useContext, useState } from "react";
+import { SendHorizontal, Image as ImageIcon } from "lucide-react";
 import axios from "axios";
 import ChatContext from "../../context/ChatContext";
-import { Loader } from "../Loader/Loader";
+
 const Input = () => {
-  const { setMessage, setLoader, text, setText, loader } = useContext(ChatContext);
+  const { setMessage, setLoader, text, setText, loader } =
+    useContext(ChatContext);
+
+  const [mode, setMode] = useState("chat"); 
 
   const SendData = async (e) => {
-    if (!text.trim()) return;
+    if (!text.trim() || loader) return;
 
-    if (e.key === "Enter" || e.type === "click" || e._reactName === "onClick"
-) {
+    if (e.key === "Enter" || e.type === "click") {
       e.preventDefault();
 
       setMessage((prev) => [...prev, { role: "user", text }]);
+      setText("");
+      setLoader(true);
 
       try {
-        setLoader(true);
-        setText("");
-        const response = await axios.post(
-          "https://api.groq.com/openai/v1/responses",
-          {
-            model: "openai/gpt-oss-120b",
-            input: text,
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+        if (mode === "chat") {
+          // TEXT AI
+          const res = await axios.post(
+            "https://api.groq.com/openai/v1/responses",
+            {
+              model: "openai/gpt-oss-120b",
+              input: text,
             },
-          }
-        );
+            {
+              headers: {
+                Authorization: `Bearer ${import.meta.env.VITE_GROQ_API_KEY}`,
+              },
+            }
+          );
 
-        const responseData = response?.data?.output[1]?.content[0]?.text;
-        setMessage((prev) => [...prev, { role: "bot", text: responseData }]);
-        setLoader(false);
-      } catch (error) {
-        if (error.status === 401) {
+          const reply = res?.data?.output[1]?.content[0]?.text;
+
           setMessage((prev) => [
             ...prev,
-            { role: "bot", text: "API is not working... Please try again." },
+            { role: "bot", text: reply, type: "text" },
           ]);
-          setLoader(false);
+        } else {
+          // IMAGE GENERATION (example using Pollinations)
+          const imgUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(
+            text
+          )}`;
+
+          setMessage((prev) => [
+            ...prev,
+            { role: "bot", text: imgUrl, type: "image" },
+          ]);
         }
-        console.error(error);
+      } catch (err) {
+        setMessage((prev) => [
+          ...prev,
+          { role: "bot", text: "⚠️ Error occurred" },
+        ]);
+      } finally {
+        setLoader(false);
       }
     }
   };
 
-
-
   return (
-    <div className="w-full h-fit px-2 relative">
+    <div className="w-full px-2">
       <form
-        onKeyDown={(e) => {
-          
-          SendData(e);
-        }}
-        className="flex justify-center items-center lg:gap-5 gap-2"
+        onKeyDown={SendData}
+        className="flex items-center justify-center gap-2"
       >
+        
+
+        {/* INPUT */}
         <textarea
-          name="input"
-          id="input"
           value={text}
-          autoComplete="false"
-          autoCorrect="false"
-          spellCheck="false"
-          placeholder="Start Chat"
-          onChange={(e) => {
-            setText(e.target.value);
-          }}
-          className="border-2 text-white outline-0 lg:w-1/2 md:w-3/4 w-full px-5 py-2 rounded-2xl placeholder-white placeholder:font-inter"
-        ></textarea>
+          placeholder={
+            mode === "chat"
+              ? "Ask anything..."
+              : "Describe image to generate..."
+          }
+          onChange={(e) => setText(e.target.value)}
+          className="flex-1 bg-white/5 border border-white/10 text-white px-4 py-2 rounded-xl outline-none resize-none"
+        />
+
+        {/* SEND */}
         <button
           type="button"
-          onClick={(e) => {
-            e.preventDefault();
-            SendData(e);
-          }}
-          className="hover:scale-115 duration-150 cursor-pointer"
+          onClick={SendData}
           disabled={loader}
+          className="bg-blue-600 hover:scale-110 transition px-3 py-2 rounded-xl"
         >
-          <SendHorizontal color="white" size={35} />
+          <SendHorizontal color="white" size={20} />
         </button>
       </form>
     </div>

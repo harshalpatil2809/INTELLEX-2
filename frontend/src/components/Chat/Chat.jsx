@@ -11,78 +11,89 @@ const Chat = () => {
   const { message = [], loader } = useContext(ChatContext);
   const bottomRef = useRef(null);
 
-  // Auto scroll to bottom on new message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [message, loader]);
 
   return (
-    <div className="flex flex-col flex-1 w-full overflow-hidden">
+    <div className="flex flex-col flex-1 w-full overflow-hidden bg-linear-to-b from-[#0f0f0f] to-[#272727] lg:px-20 md:px-20 px-0">
+      
       {/* CHAT AREA */}
       <div className="flex-1 overflow-y-auto px-4 py-3">
+        
         {/* Empty State */}
         {message.length === 0 && (
-          <div className="h-full flex items-center justify-center">
-            <div className="items-center flex flex-col gap-1">
-              <img src="/logo.png" alt="logo" className="w-30 h-auto" />
-              <div className="text-[#888] text-3xl">
-                Meet <span className="font-mono font-bold text-white/80">INTELLEX</span>
-              </div>
-              <div className="text-[#888] text-md text-center">
-                Your intelligent partner for brainstorming, coding, and creative
-              solutions. <br /> How can I help you today?
-              </div>
+          <div className="h-full flex items-center justify-center text-center">
+            <div className="flex flex-col gap-2">
+              <img src="/logo.png" alt="logo" className="w-24 mx-auto" />
+              <h1 className="text-3xl text-white font-bold">INTELLEX</h1>
+              <p className="text-gray-400">
+                AI for coding, ideas & creativity 🚀
+              </p>
             </div>
           </div>
         )}
 
         {/* Messages */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-3">
           {message.map((msg, index) => (
             <div
-              key={msg.id || index}
-              className={`flex lg:w-3/5 md:w-3/4 w-full mb-3 ${
+              key={index}
+              className={`flex w-full lg:w-3/5 md:w-3/4 ${
                 msg.role === "user" ? "justify-end" : "justify-start"
               }`}
             >
               <div
-                className={`prose max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug ${
-                  msg.role === "user" ? " bg-[#333] " : "  "
+                className={`max-w-[90%] rounded-2xl px-4 py-3 text-sm backdrop-blur-md border text-white ${
+                  msg.role === "user"
+                    ? "bg-blue-600/20 border-blue-500/20"
+                    : "bg-white/5 border-white/10"
                 }`}
               >
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    code({ inline, className, children, ...props }) {
-                      const match = /language-(\w+)/.exec(className || "");
-                      return !inline && match ? (
-                        <SyntaxHighlighter
-                          style={oneDark}
-                          language={match[1]}
-                          PreTag="div"
-                          {...props}
-                        >
-                          {String(children).replace(/\n$/, "")}
-                        </SyntaxHighlighter>
-                      ) : (
-                        <code className="bg-gray-800 px-1 rounded">
-                          {children}
-                        </code>
-                      );
-                    },
-                  }}
-                >
-                  {msg.text}
-                </ReactMarkdown>
+                {/* TEXT MESSAGE */}
+                {msg.type !== "image" && (
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      code({ inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            style={oneDark}
+                            language={match[1]}
+                            PreTag="div"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code className="bg-gray-800 px-1 rounded">
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  >
+                    {msg.text}
+                  </ReactMarkdown>
+                )}
+
+                {/* IMAGE MESSAGE */}
+                {msg.type === "image" && (
+                  <img
+                    src={msg.text}
+                    alt="generated"
+                    className="rounded-xl max-h-80"
+                  />
+                )}
               </div>
             </div>
           ))}
 
+          {/* Loader */}
           {loader && (
-            <div className="flex lg:w-3/5 md:w-3/4 w-full mb-3 justify-start">
-              <div className="max-w-[90%] text-white rounded-2xl px-4 py-2 text-md tracking-wide whitespace-pre-wrap wrap-break-word leading-snug">
+            <div className="flex w-full lg:w-3/5 md:w-3/4 justify-start">
                 <Loader />
-              </div>
             </div>
           )}
         </div>
@@ -90,8 +101,8 @@ const Chat = () => {
         <div ref={bottomRef} />
       </div>
 
-      {/* INPUT AREA */}
-      <div className="w-full pb-6 pt-3 ">
+      {/* INPUT */}
+      <div className="w-full pb-6 pt-3">
         <Input />
       </div>
     </div>
